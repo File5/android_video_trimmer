@@ -106,7 +106,7 @@
                 android:max="1000"
                 android:progressDrawable="@android:color/transparent"
                 android:secondaryProgress="0"
-                android:thumb="@drawable/seek_line"
+                android:thumb="@drawable/seek_handle"
                 android:visibility="gone" />
 
             <com.redevrx.video_trimmer.view.RangeSeekBarView

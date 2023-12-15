@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import androidx.core.content.res.ResourcesCompat
 import com.redevrx.video_trimmer.R
 import java.util.*
 
@@ -43,10 +44,10 @@ class Thumb private constructor() {
                 th.index = i
                 if (i == 0) {
                     val resImageLeft = R.drawable.seek_left_handle
-                    th.bitmap = BitmapFactory.decodeResource(resources, resImageLeft)
+                    th.bitmap = drawableToBitmap(ResourcesCompat.getDrawable(resources, resImageLeft, null)!!)
                 } else {
                     val resImageRight = R.drawable.seek_right_handle
-                    th.bitmap = BitmapFactory.decodeResource(resources, resImageRight)
+                    th.bitmap = drawableToBitmap(ResourcesCompat.getDrawable(resources, resImageRight, null)!!)
                 }
                 thumbs.add(th)
             }
