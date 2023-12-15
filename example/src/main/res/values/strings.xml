@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">android_video_trimmer</string>
+    <string name="export_menu_label">Export</string>
 </resources>
