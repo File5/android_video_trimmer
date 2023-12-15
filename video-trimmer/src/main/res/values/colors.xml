@@ -5,7 +5,7 @@
     <color name="colorAccent">#000000</color>
 
     <!-- VIDEO TRIMMER -->
-    <color name="background_video_color">#2f3031</color>
+    <color name="background_video_color">#FF121212</color>
     <color name="background_progress_color">#6C6D6D</color>
     <color name="progress_color">#3F51B5</color>
     <color name="line_color">#FF15FF00</color>

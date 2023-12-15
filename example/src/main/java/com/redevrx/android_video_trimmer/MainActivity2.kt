@@ -1,5 +1,6 @@
 package com.redevrx.android_video_trimmer
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -21,7 +22,6 @@ class MainActivity2 : AppCompatActivity(), OnVideoEditedEvent {
         val path =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
         binding.videoTrimmer.apply {
-            setVideoBackgroundColor(resources.getColor(R.color.white))
             setOnTrimVideoListener(this@MainActivity2)
             setVideoURI(uri!!)
             setDestinationPath(path.absolutePath)
