@@ -17,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
@@ -194,7 +195,7 @@ class VideoEditor @JvmOverloads constructor(
 
     private fun setUpMargins() {
         val marge = binding.timeLineBar.thumbs[0].widthBitmap
-        val lp = binding.timeLineView.layoutParams as LayoutParams
+        val lp = binding.timeLineView.layoutParams as ConstraintLayout.LayoutParams
         lp.setMargins(marge, 0, marge, 0)
         binding.timeLineView.layoutParams = lp
     }

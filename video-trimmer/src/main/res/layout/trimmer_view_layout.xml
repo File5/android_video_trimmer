@@ -68,7 +68,7 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/timeLineFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,23 +82,24 @@
                 android:layout_height="@dimen/_54sdp"
                 android:background="@android:color/black"
                 android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_5sdp"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <com.redevrx.video_trimmer.view.TimeLineView
-                    android:id="@+id/timeLineView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_37sdp"
-                    android:layout_marginEnd="@dimen/_37sdp"
-                    />
-
-            </FrameLayout>
+            <com.redevrx.video_trimmer.view.TimeLineView
+                android:id="@+id/timeLineView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintTop_toTopOf="@+id/timeLineBar"
+                app:layout_constraintStart_toStartOf="@+id/timeLineBar"
+                app:layout_constraintEnd_toEndOf="@+id/timeLineBar"
+                />
 
             <SeekBar
                 android:id="@+id/handlerTop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
@@ -107,18 +108,22 @@
                 android:progressDrawable="@android:color/transparent"
                 android:secondaryProgress="0"
                 android:thumb="@drawable/seek_handle"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/timeLineBar"
+                app:layout_constraintBottom_toBottomOf="@+id/timeLineBar" />
 
             <com.redevrx.video_trimmer.view.RangeSeekBarView
                 android:id="@+id/timeLineBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="64dp"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:layout_marginBottom="@dimen/_2sdp" />
+                android:layout_marginBottom="40dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 
