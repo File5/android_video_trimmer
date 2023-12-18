@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.redevrx.android_video_trimmer"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
