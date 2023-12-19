@@ -365,12 +365,6 @@ class VideoEditor @JvmOverloads constructor(
 
     @SuppressLint("UnsafeOptInUsageError")
     fun saveVideo() {
-        val txtTime = binding.textTimeSelection.text.toString()
-        val pattern = "\\d{2}:\\d{2}"
-        val regex = Regex(pattern)
-        val matches = regex.findAll(txtTime)
-        val timeList = matches.map { it.value }.toList()
-
         val filePath  = "$destinationPath/${UUID.randomUUID()}.mp4"
 
         val transformation = TransformationRequest.Builder()
@@ -395,8 +389,8 @@ class VideoEditor @JvmOverloads constructor(
             })
             .build()
 
-        val startMilliseconds = timeToMilliseconds(timeList[0])
-        val endMilliseconds = timeToMilliseconds(timeList[1])
+        val startMilliseconds = mStartPosition
+        val endMilliseconds = mEndPosition
 
 
         val inputMediaItem = MediaItem.Builder()
