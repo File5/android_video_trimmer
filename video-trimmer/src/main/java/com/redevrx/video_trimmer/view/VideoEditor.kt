@@ -502,6 +502,10 @@ class VideoEditor @JvmOverloads constructor(
 
 
         mPlayer.addListener(object :Player.Listener{
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                super.onPlaybackStateChanged(playbackState)
+                mMessageHandler.sendEmptyMessage(SHOW_PROGRESS)
+            }
             override fun onPlayerError(error: PlaybackException) {
                 mOnVideoEditedListener?.onError("Something went wrong reason : ${error.localizedMessage}")
             }
