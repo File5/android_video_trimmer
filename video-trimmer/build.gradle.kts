@@ -4,6 +4,9 @@ plugins {
     `maven-publish`
 }
 
+group = "com.github.File5"
+version = "1.0.1"
+
 android {
     namespace = "com.redevrx.video_trimmer"
     compileSdk = 33
@@ -76,13 +79,13 @@ afterEvaluate {
                 from(components["release"])
 
                 // NOTE : Different GroupId For Each Library / Module, So That Each Library Is Not Overwritten
-                groupId = "com.github.redevrx"
+                groupId = "com.github.File5"
 
                 // NOTE : Different ArtifactId For Each Library / Module, So That Each Library Is Not Overwritten
-                artifactId = "android_video_trimmer"
+                artifactId = "video-trimmer"
 
                 // Version Library Name (Example : "1.0.0")
-                version = "1.0.0"
+                version = "1.0.1"
 
             }
 
