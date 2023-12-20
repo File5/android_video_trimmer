@@ -1,6 +1,5 @@
 package com.redevrx.android_video_trimmer
 
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -8,6 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.media3.transformer.ExportResult
+import androidx.media3.transformer.Composition
 import com.redevrx.android_video_trimmer.databinding.ActivityMain2Binding
 import com.redevrx.video_trimmer.event.OnVideoEditedEvent
 
@@ -48,21 +49,23 @@ class MainActivity2 : AppCompatActivity(), OnVideoEditedEvent {
         else -> super.onOptionsItemSelected(item)
     }
 
-
-    override fun getResult(uri: Uri) {
+    override fun onVideoSaveResult(
+        uri: Uri,
+        composition: Composition,
+        exportResult: ExportResult
+    ) {
         println("Save video success")
         println(uri.path)
         Toast.makeText(this, "Video export finished", Toast.LENGTH_SHORT).show()
     }
 
-
-    override fun onError(message: String) {
-        println("Save video error :$message")
+    override fun onVideoSaveError(
+        composition: Composition?,
+        exportResult: ExportResult?,
+        exception: Exception
+    ) {
+        println("Save video error :${exception.localizedMessage ?: exception.message ?: exception.toString()}")
         Toast.makeText(this, "Video export finished (error occurred)", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onProgress(percentage: Int) {
-
     }
 
 }

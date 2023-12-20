@@ -376,7 +376,7 @@ class VideoEditor @JvmOverloads constructor(
             .setTransformationRequest(transformation)
             .addListener(object : androidx.media3.transformer.Transformer.Listener {
                 override fun onCompleted(composition: Composition, exportResult: ExportResult) {
-                 mOnVideoEditedListener?.getResult(Uri.parse(filePath))
+                 mOnVideoEditedListener?.onVideoSaveResult(Uri.parse(filePath), composition, exportResult)
                 }
 
                 override fun onError(
@@ -384,7 +384,7 @@ class VideoEditor @JvmOverloads constructor(
                     exportResult: ExportResult,
                     exportException: ExportException
                 ) {
-                    exportException.localizedMessage?.let { mOnVideoEditedListener?.onError(it) }
+                    mOnVideoEditedListener?.onVideoSaveError(composition, exportResult, exportException)
                 }
             })
             .build()
@@ -501,7 +501,7 @@ class VideoEditor @JvmOverloads constructor(
                 mMessageHandler.sendEmptyMessage(SHOW_PROGRESS)
             }
             override fun onPlayerError(error: PlaybackException) {
-                mOnVideoEditedListener?.onError("Something went wrong reason : ${error.localizedMessage}")
+                mOnVideoEditedListener?.onVideoSaveError(null, null, error)
             }
             @SuppressLint("UnsafeOptInUsageError")
             override fun onVideoSizeChanged(videoSize: VideoSize) {
