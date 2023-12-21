@@ -9,7 +9,7 @@ version = "1.0.1"
 
 android {
     namespace = "com.redevrx.video_trimmer"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
@@ -56,10 +56,10 @@ dependencies {
 //    implementation("com.arthenica:ffmpeg-kit-min-gpl:6.0")
 
     ///
-    implementation("androidx.media3:media3-exoplayer:1.1.1")
-    implementation("androidx.media3:media3-exoplayer-dash:1.1.1")
-    implementation("androidx.media3:media3-ui:1.1.1")
-    implementation("androidx.media3:media3-transformer:1.1.1")
+    implementation("androidx.media3:media3-exoplayer:1.2.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.2.0")
+    implementation("androidx.media3:media3-ui:1.2.0")
+    implementation("androidx.media3:media3-transformer:1.2.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
