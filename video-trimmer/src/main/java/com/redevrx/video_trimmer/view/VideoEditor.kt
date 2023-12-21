@@ -94,6 +94,7 @@ class VideoEditor @JvmOverloads constructor(
         set(finalPath) {
             mFinalPath = finalPath
         }
+    private var resultFileName: String? = null
 
     init {
         init(context)
@@ -365,7 +366,9 @@ class VideoEditor @JvmOverloads constructor(
 
     @SuppressLint("UnsafeOptInUsageError")
     fun saveVideo() {
-        val filePath  = "$destinationPath/${UUID.randomUUID()}.mp4"
+        val fileName = resultFileName ?: "${UUID.randomUUID()}.mp4"
+        val filePath = "$destinationPath/$fileName"
+        val resultUri = Uri.parse(filePath)
 
         val transformation = TransformationRequest.Builder()
             .setVideoMimeType(MimeTypes.VIDEO_H264)
@@ -376,7 +379,7 @@ class VideoEditor @JvmOverloads constructor(
             .setTransformationRequest(transformation)
             .addListener(object : androidx.media3.transformer.Transformer.Listener {
                 override fun onCompleted(composition: Composition, exportResult: ExportResult) {
-                 mOnVideoEditedListener?.onVideoSaveResult(Uri.parse(filePath), composition, exportResult)
+                 mOnVideoEditedListener?.onVideoSaveResult(resultUri, composition, exportResult)
                 }
 
                 override fun onError(
@@ -384,7 +387,7 @@ class VideoEditor @JvmOverloads constructor(
                     exportResult: ExportResult,
                     exportException: ExportException
                 ) {
-                    mOnVideoEditedListener?.onVideoSaveError(composition, exportResult, exportException)
+                    mOnVideoEditedListener?.onVideoSaveError(resultUri, composition, exportResult, exportException)
                 }
             })
             .build()
@@ -470,6 +473,11 @@ class VideoEditor @JvmOverloads constructor(
         return this
     }
 
+    fun setResultFileName(name: String): VideoEditor {
+        resultFileName = name
+        return this
+    }
+
 
     @SuppressLint("UnsafeOptInUsageError")
     fun setVideoURI(videoURI: Uri): VideoEditor {
@@ -501,7 +509,7 @@ class VideoEditor @JvmOverloads constructor(
                 mMessageHandler.sendEmptyMessage(SHOW_PROGRESS)
             }
             override fun onPlayerError(error: PlaybackException) {
-                mOnVideoEditedListener?.onVideoSaveError(null, null, error)
+                mOnVideoEditedListener?.onVideoSaveError(null, null, null, error)
             }
             @SuppressLint("UnsafeOptInUsageError")
             override fun onVideoSizeChanged(videoSize: VideoSize) {

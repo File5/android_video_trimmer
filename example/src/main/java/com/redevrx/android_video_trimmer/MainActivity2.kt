@@ -28,6 +28,7 @@ class MainActivity2 : AppCompatActivity(), OnVideoEditedEvent {
         binding.videoTrimmer.apply {
             setOnTrimVideoListener(this@MainActivity2)
             setVideoURI(uri!!)
+            setResultFileName("video_test.mp4")
             setDestinationPath(path.absolutePath)
             setVideoInformationVisibility(true)
             setMaxDuration(30)
@@ -60,6 +61,7 @@ class MainActivity2 : AppCompatActivity(), OnVideoEditedEvent {
     }
 
     override fun onVideoSaveError(
+        uri: Uri?,
         composition: Composition?,
         exportResult: ExportResult?,
         exception: Exception
