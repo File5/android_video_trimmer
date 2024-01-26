@@ -2,6 +2,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
+            <size android:width="36dp" android:height="64dp" />
+        </shape>
+    </item>
+    <item
+        android:top="0dp"
+        android:bottom="0dp"
+        android:left="12dp"
+        android:right="12dp">
+        <shape android:shape="rectangle">
             <solid android:color="@android:color/white" />
             <size android:width="12dp" android:height="64dp" />
         </shape>
@@ -9,8 +18,8 @@
     <item
         android:top="23dp"
         android:bottom="23dp"
-        android:left="3.5dp"
-        android:right="3.5dp">
+        android:left="15.5dp"
+        android:right="15.5dp">
         <vector
             android:height="8dp"
             android:width="4dp"

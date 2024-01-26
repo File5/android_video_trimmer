@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -19,6 +20,7 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     private var mListeners: MutableList<OnRangeSeekBarEvent>? = null
     private var mMaxWidth = 0f
     private var mThumbWidth = 0f
+    private var mThumbPadExtSide = 0f
     private var mThumbHeight = 0f
     private var mViewWidth = 0
     private var mPixelRangeMin = 0f
@@ -31,13 +33,22 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private var currentThumb = 0
 
+    private val gestureExclusionRects = mutableListOf<Rect>()
+
+    private val debugThumbs = false
+
     init {
         init()
     }
 
     private fun init() {
-        thumbs = Thumb.initThumbs(resources)
+        thumbs = Thumb.initThumbs(resources, debugThumbs)
         mThumbWidth = Thumb.getWidthBitmap(thumbs).toFloat()
+        // thumb has invisible padding on both sides
+        // (check drawable/seek_{left,right}_handle.xml)
+        // mThumbPadExtSide is the padding on external side
+        // (left thumb - left padding, right thumb - right padding)
+        mThumbPadExtSide = mThumbWidth / 3
         mThumbHeight = Thumb.getHeightBitmap(thumbs).toFloat()
 
         mScaleRangeMax = 100f
@@ -88,6 +99,11 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
             onCreate(this, currentThumb, getThumbValue(currentThumb))
             mFirstRun = false
         }
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        updateGestureExclusion()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -154,6 +170,15 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
         return false
     }
 
+    private fun updateGestureExclusion() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return
+
+        gestureExclusionRects.clear()
+        gestureExclusionRects.add(Rect(0, 0, width, height))
+
+        systemGestureExclusionRects = gestureExclusionRects
+    }
+
     private fun checkPositionThumb(mThumbLeft: Thumb, mThumbRight: Thumb, dx: Float, isLeftMove: Boolean) {
         if (isLeftMove && dx < 0) {
             if (mThumbRight.pos + dx - mThumbLeft.pos > mMaxWidth) {
@@ -180,23 +205,25 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun pixelToScale(index: Int, pixelValue: Float): Float {
+        val actualThumbWidth = mThumbWidth - mThumbPadExtSide - mThumbPadExtSide
         val scale = pixelValue * 100 / mPixelRangeMax
         return if (index == 0) {
-            val pxThumb = scale * mThumbWidth / 100
+            val pxThumb = scale * actualThumbWidth / 100
             scale + pxThumb * 100 / mPixelRangeMax
         } else {
-            val pxThumb = (100 - scale) * mThumbWidth / 100
+            val pxThumb = (100 - scale) * actualThumbWidth / 100
             scale - pxThumb * 100 / mPixelRangeMax
         }
     }
 
     private fun scaleToPixel(index: Int, scaleValue: Float): Float {
+        val actualThumbWidth = mThumbWidth - mThumbPadExtSide - mThumbPadExtSide
         val px = scaleValue * mPixelRangeMax / 100
         return if (index == 0) {
-            val pxThumb = scaleValue * mThumbWidth / 100
+            val pxThumb = scaleValue * actualThumbWidth / 100
             px - pxThumb
         } else {
-            val pxThumb = (100 - scaleValue) * mThumbWidth / 100
+            val pxThumb = (100 - scaleValue) * actualThumbWidth / 100
             px + pxThumb
         }
     }
@@ -244,18 +271,19 @@ class RangeSeekBarView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun drawShadow(canvas: Canvas) {
+        val actualThumbWidth = mThumbWidth - mThumbPadExtSide - mThumbPadExtSide
         if (thumbs.isNotEmpty()) {
             for (th in thumbs) {
                 if (th.index == 0) {
-                    val x = th.pos + paddingLeft
+                    val x = th.pos + paddingLeft + mThumbPadExtSide
                     if (x > mPixelRangeMin) {
-                        val mRect = Rect(mThumbWidth.toInt(), 0, (x + mThumbWidth).toInt(), mHeightTimeLine)
+                        val mRect = Rect(actualThumbWidth.toInt(), 0, (x + actualThumbWidth).toInt(), mHeightTimeLine)
                         canvas.drawRect(mRect, mShadow)
                     }
                 } else {
-                    val x = th.pos - paddingRight
+                    val x = th.pos - paddingRight + mThumbPadExtSide
                     if (x < mPixelRangeMax) {
-                        val mRect = Rect(x.toInt(), 0, (mViewWidth - mThumbWidth).toInt(), mHeightTimeLine)
+                        val mRect = Rect(x.toInt(), 0, (mViewWidth - actualThumbWidth).toInt(), mHeightTimeLine)
                         canvas.drawRect(mRect, mShadow)
                     }
                 }

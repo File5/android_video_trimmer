@@ -37,16 +37,21 @@ class Thumb private constructor() {
         const val LEFT = 0
         const val RIGHT = 1
 
-        fun initThumbs(resources: Resources): List<Thumb> {
+        private fun getResThumbLeft(debugThumbs: Boolean) =
+            if (debugThumbs) R.drawable.seek_left_handle_debug else R.drawable.seek_left_handle
+        private fun getResThumbRight(debugThumbs: Boolean) =
+            if (debugThumbs) R.drawable.seek_right_handle_debug else R.drawable.seek_right_handle
+
+        fun initThumbs(resources: Resources, debugThumbs: Boolean): List<Thumb> {
             val thumbs = Vector<Thumb>()
             for (i in 0..1) {
                 val th = Thumb()
                 th.index = i
                 if (i == 0) {
-                    val resImageLeft = R.drawable.seek_left_handle
+                    val resImageLeft = getResThumbLeft(debugThumbs)
                     th.bitmap = drawableToBitmap(ResourcesCompat.getDrawable(resources, resImageLeft, null)!!)
                 } else {
-                    val resImageRight = R.drawable.seek_right_handle
+                    val resImageRight = getResThumbRight(debugThumbs)
                     th.bitmap = drawableToBitmap(ResourcesCompat.getDrawable(resources, resImageRight, null)!!)
                 }
                 thumbs.add(th)
